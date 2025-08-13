@@ -17,4 +17,27 @@ public class Tasks {
         return phone.matches("^\\+7\\(\\d{3}\\)\\d{3}-\\d{2}-\\d{2}$");
     }
 
+/**
+    Задание 2
+    Создать метод для валидации email адреса.
+    Email должен содержать латинские буквы, цифры,
+    точки и дефисы в локальной части, символ @, и домен из букв и точек.
+
+
+    Примеры:
+
+    user@example.com → true
+    user.name@domain.co.uk → true
+    user@ → false
+    @domain.com → false
+**/
+    public boolean isValidEmail(String email) {
+        if (email == null || email.isEmpty()) {
+            return false;
+        }
+
+        return email.matches("^[a-zA-Z0-9.-]+@[a-zA-Z.]+$");
+    }
+
+
 }
