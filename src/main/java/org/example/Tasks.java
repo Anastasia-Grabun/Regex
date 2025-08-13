@@ -1,5 +1,7 @@
 package org.example;
 
+import java.util.regex.Pattern;
+
 public class Tasks {
 /** Задание 1
     Написать метод, который проверяет, является ли строка валидным номером телефона в формате +7(XXX)XXX-XX-XX.
@@ -39,5 +41,25 @@ public class Tasks {
         return email.matches("^[a-zA-Z0-9.-]+@[a-zA-Z.]+$");
     }
 
+   /** Задание 3
+    Написать метод, который извлекает все числа из строки и возвращает их сумму.
 
+    Примеры:
+
+            "У меня есть 5 яблок и 10 груш" → 15
+            "Нет чисел в тексте" → 0
+            "123abc456def789" → 1368
+**/
+   public int extractAndSumNumbers(String text) {
+       if (text == null || text.isEmpty()) {
+           return 0;
+       }
+       int sum = Pattern.compile("\\d+")
+               .matcher(text)
+               .results()
+               .mapToInt(m -> Integer.parseInt(m.group()))
+               .sum();
+
+       return sum;
+   }
 }

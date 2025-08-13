@@ -58,5 +58,44 @@ class TasksTest {
     void emptyEmail_ShouldReturnFalse() {
         Assertions.assertFalse(validator.isValidPhoneNumber(""));
     }
+
+    //task3
+    @Test
+    void sumNumbers_MixedTextWithNumbers_ShouldReturnCorrectSum() {
+        String text = "У меня есть 5 яблок и 10 груш";
+        int result = validator.extractAndSumNumbers(text);
+
+        Assertions.assertEquals(15, result);
+    }
+
+    @Test
+    void sumNumbers_NoNumbers_ShouldReturnZero() {
+        String text = "Нет чисел в тексте";
+        int result = validator.extractAndSumNumbers(text);
+
+        Assertions.assertEquals(0, result);
+    }
+
+    @Test
+    void sumNumbers_NumbersInterleavedWithLetters_ShouldReturnCorrectSum() {
+        String text = "123abc456def789";
+        int result = validator.extractAndSumNumbers(text);
+
+        Assertions.assertEquals(1368, result);
+    }
+
+    @Test
+    void sumNumbers_NullString_ShouldReturnZero() {
+        String text = null;
+        int result = validator.extractAndSumNumbers(text);
+        Assertions.assertEquals(0, result);
+    }
+
+    @Test
+    void sumNumbers_EmptyString_ShouldReturnZero() {
+        String text = "";
+        int result = validator.extractAndSumNumbers(text);
+        Assertions.assertEquals(0, result);
+    }
 }
 
