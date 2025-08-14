@@ -2,6 +2,7 @@ package org.example;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Stack;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -122,5 +123,44 @@ public class Tasks {
 
       return entries;
   }
+
+   /** Задание 9
+    Написать метод, который проверяет правильность
+    написания HTML тегов в строке. Нужно проверить:
+
+    Все открывающие теги имеют соответствующие закрывающие
+    Теги правильно вложены
+    Самозакрывающиеся теги корректны
+
+    Примеры:
+
+            "<div><p>Text</p></div>" → true
+            "<div><p>Text</div></p>" → false
+            "<img src='test.jpg' />" → true
+            "<div><span>Text</div>" → false**/
+   public boolean isValidHtml(String html) {
+       Stack<String> stack = new Stack<>();
+
+       String tagPattern = "<(/?)(\\w+)([^>]*)>";
+       Matcher matcher = Pattern.compile(tagPattern).matcher(html);
+
+       while (matcher.find()) {
+           String slash = matcher.group(1);
+           String tagName = matcher.group(2);
+           String rest = matcher.group(3);
+
+           boolean selfClosing = rest.endsWith("/");
+
+           if (slash.equals("/")) {
+               if (stack.isEmpty() || !stack.pop().equals(tagName)) {
+                   return false;
+               }
+           } else if (!selfClosing) {
+               stack.push(tagName);
+           }
+       }
+
+       return stack.isEmpty();
+   }
 
 }

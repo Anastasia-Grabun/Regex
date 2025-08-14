@@ -1,10 +1,10 @@
 import org.example.LogEntry;
 import org.example.Tasks;
 
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -25,18 +25,18 @@ class TasksTest {
         String phone1 = "+7123456-78-90";
         String phone2 = "+8(123)456-78-90";
 
-        Assertions.assertFalse(validator.isValidPhoneNumber(phone1));
-        Assertions.assertFalse(validator.isValidPhoneNumber(phone2));
+        assertFalse(validator.isValidPhoneNumber(phone1));
+        assertFalse(validator.isValidPhoneNumber(phone2));
     }
 
     @Test
     void nullPhoneNumber_ShouldReturnFalse() {
-        Assertions.assertFalse(validator.isValidPhoneNumber(null));
+        assertFalse(validator.isValidPhoneNumber(null));
     }
 
     @Test
     void emptyPhoneNumber_ShouldReturnFalse() {
-        Assertions.assertFalse(validator.isValidPhoneNumber(""));
+        assertFalse(validator.isValidPhoneNumber(""));
     }
 
     //task2
@@ -51,18 +51,18 @@ class TasksTest {
         String email1 = "user@";
         String email2 = "@domain.com";
 
-        Assertions.assertFalse(validator.isValidPhoneNumber(email1));
-        Assertions.assertFalse(validator.isValidPhoneNumber(email2));
+        assertFalse(validator.isValidPhoneNumber(email1));
+        assertFalse(validator.isValidPhoneNumber(email2));
     }
 
     @Test
     void nullEmail_ShouldReturnFalse() {
-        Assertions.assertFalse(validator.isValidEmail(null));
+        assertFalse(validator.isValidEmail(null));
     }
 
     @Test
     void emptyEmail_ShouldReturnFalse() {
-        Assertions.assertFalse(validator.isValidPhoneNumber(""));
+        assertFalse(validator.isValidPhoneNumber(""));
     }
 
     //task3
@@ -238,6 +238,61 @@ class TasksTest {
         assertEquals("123.123.123.123", entry.ip);
         assertEquals("11/Oct/2023:10:00:00 +0000", entry.timestamp);
         assertEquals(500, entry.statusCode);
+    }
+
+    //task9
+    @Test
+    public void testValidNestedTags() {
+        String html = "<div><p>Text</p></div>";
+        assertTrue(validator.isValidHtml(html));
+    }
+
+    @Test
+    public void testInvalidNestedTags() {
+        String html = "<div><p>Text</div></p>";
+        assertFalse(validator.isValidHtml(html));
+    }
+
+    @Test
+    public void testSelfClosingTag() {
+        String html = "<img src='test.jpg' />";
+        assertTrue(validator.isValidHtml(html));
+    }
+
+    @Test
+    public void testMissingClosingTag() {
+        String html = "<div><span>Text</div>";
+        assertFalse(validator.isValidHtml(html));
+    }
+
+    @Test
+    public void testEmptyString() {
+        String html = "";
+        assertTrue(validator.isValidHtml(html));
+    }
+
+    @Test
+    public void testOnlyTextNoTags() {
+        String html = "Hello world!";
+        assertTrue(validator.isValidHtml(html));
+    }
+
+    @Test
+    public void testMultipleNestedTags() {
+        String html = "<div><span><p>Text</p></span></div>";
+        assertTrue(validator.isValidHtml(html));
+    }
+
+    @Test
+    public void testIncorrectClosingTagName() {
+        String html = "<div><span>Text</div></span>";
+        assertFalse(validator.isValidHtml(html));
+    }
+
+    @Test
+    public void testMultipleSelfClosingTags() {
+        String html = "<br/><img src='x.jpg'/><hr/>";
+        assertTrue(validator.isValidHtml(html));
     }
 
 }
