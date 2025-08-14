@@ -1,6 +1,5 @@
 import org.example.LogEntry;
 import org.example.Tasks;
-
 import org.junit.jupiter.api.Test;
 import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -357,6 +356,62 @@ class TasksTest {
         assertEquals(2, result.size());
         assertTrue(result.contains("{\"x\":1}"));
         assertTrue(result.contains("{\"y\":2}"));
+    }
+
+    //task6
+    @Test
+    public void testMultipleUrls() {
+        String text = "Посетите https://example.com и http://test.org";
+        List<String> result = validator.extractUrls(text);
+
+        assertEquals(2, result.size());
+        assertTrue(result.contains("https://example.com"));
+        assertTrue(result.contains("http://test.org"));
+    }
+
+    @Test
+    public void testSingleUrl() {
+        String text = "Ссылка: https://domain.co.uk/path?param=value";
+        List<String> result = validator.extractUrls(text);
+
+        assertEquals(1, result.size());
+        assertEquals("https://domain.co.uk/path?param=value", result.get(0));
+    }
+
+    @Test
+    public void testNoUrls() {
+        String text = "Просто текст без ссылок";
+        List<String> result = validator.extractUrls(text);
+
+        assertTrue(result.isEmpty());
+    }
+
+    @Test
+    public void testUrlWithTrailingPunctuation() {
+        String text = "Смотрите http://example.com.";
+        List<String> result = validator.extractUrls(text);
+
+        assertEquals(1, result.size());
+        assertEquals("http://example.com.", result.get(0));
+    }
+
+    @Test
+    public void testMultipleAdjacentUrls() {
+        String text = "https://a.comhttp://b.org";
+        List<String> result = validator.extractUrls(text);
+
+        assertEquals(2, result.size());
+        assertTrue(result.contains("https://a.com"));
+        assertTrue(result.contains("http://b.org"));
+    }
+
+    @Test
+    public void testUrlWithQueryAndAnchor() {
+        String text = "Посмотрите https://example.com/path?query=1#section";
+        List<String> result = validator.extractUrls(text);
+
+        assertEquals(1, result.size());
+        assertEquals("https://example.com/path?query=1#section", result.get(0));
     }
 
 }

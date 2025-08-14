@@ -190,4 +190,27 @@ public class Tasks {
 
         return result;
     }
+
+   /* Задание 6
+    Создать метод, который извлекает все URL из текста.
+    URL должен начинаться с http:// или https://.
+    Примеры:
+
+            "Посетите https://example.com и http://test.org" → ["https://example.com", "http://test.org"]
+            "Ссылка: https://domain.co.uk/path?param=value" → ["https://domain.co.uk/path?param=value"]
+*/
+   public List<String> extractUrls(String text) {
+       List<String> urls = new ArrayList<>();
+
+       String urlPattern =  "https?://.*?(?=\\s|$|https?://)";
+       Pattern pattern = Pattern.compile(urlPattern);
+       Matcher matcher = pattern.matcher(text);
+
+       while(matcher.find()){
+           urls.add(matcher.group());
+       }
+
+       return urls;
+   }
+
 }
