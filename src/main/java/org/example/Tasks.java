@@ -54,6 +54,7 @@ public class Tasks {
        if (text == null || text.isEmpty()) {
            return 0;
        }
+
        int sum = Pattern.compile("\\d+")
                .matcher(text)
                .results()
@@ -62,4 +63,21 @@ public class Tasks {
 
        return sum;
    }
+
+    /**Задание 4
+    Создать метод, который заменяет все последовательности пробелов (один или более)
+     на один пробел и удаляет пробелы в начале и конце строки.
+    Примеры:
+
+            "  hello    world  " → "hello world"
+            "multiple   spaces   here" → "multiple spaces here"
+**/
+    public String normalizeSpaces(String text) {
+        if (text == null) {
+            return null;
+        }
+
+        return text.trim().replaceAll(" +", " ");
+    }
+
 }

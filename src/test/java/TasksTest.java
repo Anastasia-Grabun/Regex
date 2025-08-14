@@ -97,5 +97,32 @@ class TasksTest {
         int result = validator.extractAndSumNumbers(text);
         Assertions.assertEquals(0, result);
     }
+
+    //task4
+    @Test
+    void shouldNormalizeSpacesWithLeadingAndTrailing() {
+        String input = "  hello    world  ";
+        String expected = "hello world";
+        Assertions.assertEquals(expected, validator.normalizeSpaces(input));
+    }
+
+    @Test
+    void shouldNormalizeMultipleSpacesInside() {
+        String input = "multiple   spaces   here";
+        String expected = "multiple spaces here";
+
+        Assertions.assertEquals(expected, validator.normalizeSpaces(input));
+    }
+
+    @Test
+    void shouldReturnNullWhenInputIsNull() {
+        Assertions.assertNull(validator.normalizeSpaces(null));
+    }
+
+    @Test
+    void shouldReturnEmptyWhenInputIsEmpty() {
+        Assertions.assertEquals("", validator.normalizeSpaces(""));
+    }
+
 }
 
