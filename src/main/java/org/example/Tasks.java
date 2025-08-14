@@ -163,4 +163,31 @@ public class Tasks {
        return stack.isEmpty();
    }
 
+/*    Задание 10
+    Создать метод, который извлекает и валидирует
+    JSON объекты из текста, используя только регулярные выражения.
+    Нужно найти все JSON объекты и
+     проверить базовую корректность структуры (парные скобки, кавычки для ключей).
+
+
+
+    Пример:
+
+    Данные: {"name": "John", "age": 30} и {"invalid": json} и {"valid": "data", "number": 42}
+
+    Должен вернуть: ["{"name": "John", "age": 30}", "{"valid": "data", "number": 42}"]*/
+    public List<String> extractValidJsonObjects(String text) {
+        List<String> result = new ArrayList<>();
+
+        String jsonPattern = "\\{\\s*(\"[^\"]+\"\\s*:\\s*(\"[^\"]*\"|\\d+)(\\s*,\\s*\"[^\"]+\"\\s*:\\s*(\"[^\"]*\"|\\d+))*)?\\s*\\}";
+        Pattern pattern = Pattern.compile(jsonPattern);
+        Matcher matcher = pattern.matcher(text);
+
+        while (matcher.find()) {
+            String json = matcher.group();
+            result.add(json);
+        }
+
+        return result;
+    }
 }

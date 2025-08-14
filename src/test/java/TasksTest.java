@@ -295,5 +295,69 @@ class TasksTest {
         assertTrue(validator.isValidHtml(html));
     }
 
+    //task10
+    @Test
+    public void testMultipleJsonObjects() {
+        String text = "{\"name\": \"John\", \"age\": 30} и {\"invalid\": json} и {\"valid\": \"data\", \"number\": 42}";
+        List<String> result = validator.extractValidJsonObjects(text);
+
+        assertEquals(2, result.size());
+        assertTrue(result.contains("{\"name\": \"John\", \"age\": 30}"));
+        assertTrue(result.contains("{\"valid\": \"data\", \"number\": 42}"));
+    }
+
+    @Test
+    public void testSingleJsonObject() {
+        String text = "Here is 1 object: {\"key\": \"value\"}";
+        List<String> result = validator.extractValidJsonObjects(text);
+
+        assertEquals(1, result.size());
+        assertEquals("{\"key\": \"value\"}", result.get(0));
+    }
+
+    @Test
+    public void testNoJsonObjects() {
+        String text = "Just text without objects";
+        List<String> result = validator.extractValidJsonObjects(text);
+
+        assertTrue(result.isEmpty());
+    }
+
+    @Test
+    public void testInvalidJsonOnly() {
+        String text = "{invalid: json} и {key: 123}";
+        List<String> result = validator.extractValidJsonObjects(text);
+
+        assertTrue(result.isEmpty());
+    }
+
+    @Test
+
+    public void shouldReturnTrue_extractEmptyText() {
+        String text = "";
+        List<String> result = validator.extractValidJsonObjects(text);
+
+        assertTrue(result.isEmpty());
+    }
+
+    @Test
+    public void testJsonWithSpaces() {
+        String text = "{  \"a\"  :  \"1\" , \"b\" : 2 }";
+        List<String> result = validator.extractValidJsonObjects(text);
+
+        assertEquals(1, result.size());
+        assertEquals("{  \"a\"  :  \"1\" , \"b\" : 2 }", result.get(0));
+    }
+
+    @Test
+    public void testAdjacentJsonObjects() {
+        String text = "{\"x\":1}{\"y\":2}";
+        List<String> result = validator.extractValidJsonObjects(text);
+
+        assertEquals(2, result.size());
+        assertTrue(result.contains("{\"x\":1}"));
+        assertTrue(result.contains("{\"y\":2}"));
+    }
+
 }
 
