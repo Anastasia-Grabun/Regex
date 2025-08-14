@@ -71,5 +71,25 @@ public class Tasks {
         );
     }
 
+   /* Задание 7
+    Написать метод, который форматирует номер банковской карты, разбивая его на группы по 4 цифры, разделенные пробелами. Входная строка может содержать пробелы и дефисы.
+
+    Примеры:
+
+            "1234567890123456" → "1234 5678 9012 3456"
+            "1234-5678-9012-3456" → "1234 5678 9012 3456"
+            "1234 56" → null*/
+    public String formatCardNumber(String cardNumber) {
+        if(cardNumber == null || cardNumber.isEmpty()){
+            return null;
+        }
+
+        String number = cardNumber.replaceAll("[^0-9]", "");
+        if(number.length() != 16){
+            return null;
+        }
+
+        return number.replaceAll("(.{4})(?=.)", "$1 ").trim();
+    }
 
 }

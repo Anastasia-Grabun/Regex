@@ -2,6 +2,9 @@ import org.example.Tasks;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 class TasksTest {
 
@@ -65,7 +68,7 @@ class TasksTest {
         String text = "У меня есть 5 яблок и 10 груш";
         int result = validator.extractAndSumNumbers(text);
 
-        Assertions.assertEquals(15, result);
+        assertEquals(15, result);
     }
 
     @Test
@@ -73,7 +76,7 @@ class TasksTest {
         String text = "Нет чисел в тексте";
         int result = validator.extractAndSumNumbers(text);
 
-        Assertions.assertEquals(0, result);
+        assertEquals(0, result);
     }
 
     @Test
@@ -81,21 +84,21 @@ class TasksTest {
         String text = "123abc456def789";
         int result = validator.extractAndSumNumbers(text);
 
-        Assertions.assertEquals(1368, result);
+        assertEquals(1368, result);
     }
 
     @Test
     void sumNumbers_NullString_ShouldReturnZero() {
         String text = null;
         int result = validator.extractAndSumNumbers(text);
-        Assertions.assertEquals(0, result);
+        assertEquals(0, result);
     }
 
     @Test
     void sumNumbers_EmptyString_ShouldReturnZero() {
         String text = "";
         int result = validator.extractAndSumNumbers(text);
-        Assertions.assertEquals(0, result);
+        assertEquals(0, result);
     }
 
     //task4
@@ -103,7 +106,7 @@ class TasksTest {
     void shouldNormalizeSpacesWithLeadingAndTrailing() {
         String input = "  hello    world  ";
         String expected = "hello world";
-        Assertions.assertEquals(expected, validator.normalizeSpaces(input));
+        assertEquals(expected, validator.normalizeSpaces(input));
     }
 
     @Test
@@ -111,26 +114,25 @@ class TasksTest {
         String input = "multiple   spaces   here";
         String expected = "multiple spaces here";
 
-        Assertions.assertEquals(expected, validator.normalizeSpaces(input));
+        assertEquals(expected, validator.normalizeSpaces(input));
     }
 
     @Test
     void shouldReturnNullWhenInputIsNull() {
-        Assertions.assertNull(validator.normalizeSpaces(null));
+        assertNull(validator.normalizeSpaces(null));
     }
 
     @Test
     void shouldReturnEmptyWhenInputIsEmpty() {
-        Assertions.assertEquals("", validator.normalizeSpaces(""));
+        assertEquals("", validator.normalizeSpaces(""));
     }
 
     //task5
-
     @Test
     void shouldReturnTrueWhenPasswordIsStrong(){
         String password = "MyPass123!";
 
-        Assertions.assertNotEquals(true, validator.isStrongPassword(password));
+        assertNotEquals(true, validator.isStrongPassword(password));
     }
 
     @Test
@@ -138,18 +140,57 @@ class TasksTest {
         String password1 = "weakpass";
         String password2 = "NODIGITS!";
 
-        Assertions.assertEquals(false, validator.isStrongPassword(password1));
-        Assertions.assertEquals(false, validator.isStrongPassword(password2));
+        assertEquals(false, validator.isStrongPassword(password1));
+        assertEquals(false, validator.isStrongPassword(password2));
     }
 
     @Test
     void shouldReturnFalseWhenPasswordIsNull(){
-        Assertions.assertEquals(false, validator.isStrongPassword(null));
+        assertEquals(false, validator.isStrongPassword(null));
     }
 
     @Test
     void shouldReturnFalseWhenPasswordIsEmpty(){
-        Assertions.assertEquals(false, validator.isStrongPassword(""));
+        assertEquals(false, validator.isStrongPassword(""));
+    }
+
+    //task6
+    @Test
+    void shouldReturnNull_CardNumberIsNull() {
+        assertNull(validator.formatCardNumber(null));
+    }
+
+    @Test
+    void shouldReturnNull_CardNumberIsEmpty() {
+        assertNull(validator.formatCardNumber(""));
+    }
+
+    @Test
+    void shouldReturnNull_IncorrectLengthTooShort() {
+        assertNull(validator.formatCardNumber("1234 56"));
+    }
+
+    @Test
+    void shouldReturnNull_IncorrectLengthTooLong() {
+        assertNull(validator.formatCardNumber("12345678901234567890"));
+    }
+
+    @Test
+    void testValidContinuousDigits() {
+        assertEquals("1234 5678 9012 3456",
+                validator.formatCardNumber("1234567890123456"));
+    }
+
+    @Test
+    void testValidWithDashes() {
+        assertEquals("1234 5678 9012 3456",
+                validator.formatCardNumber("1234-5678-9012-3456"));
+    }
+
+    @Test
+    void testValidWithSpacesAndDashesMixed() {
+        assertEquals("1234 5678 9012 3456",
+                validator.formatCardNumber("1234 - 5678 - 9012 - 3456"));
     }
 
 }
