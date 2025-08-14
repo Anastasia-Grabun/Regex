@@ -124,5 +124,33 @@ class TasksTest {
         Assertions.assertEquals("", validator.normalizeSpaces(""));
     }
 
+    //task5
+
+    @Test
+    void shouldReturnTrueWhenPasswordIsStrong(){
+        String password = "MyPass123!";
+
+        Assertions.assertNotEquals(true, validator.isStrongPassword(password));
+    }
+
+    @Test
+    void shouldReturnFalseWhenPasswordIsNotStrong(){
+        String password1 = "weakpass";
+        String password2 = "NODIGITS!";
+
+        Assertions.assertEquals(false, validator.isStrongPassword(password1));
+        Assertions.assertEquals(false, validator.isStrongPassword(password2));
+    }
+
+    @Test
+    void shouldReturnFalseWhenPasswordIsNull(){
+        Assertions.assertEquals(false, validator.isStrongPassword(null));
+    }
+
+    @Test
+    void shouldReturnFalseWhenPasswordIsEmpty(){
+        Assertions.assertEquals(false, validator.isStrongPassword(""));
+    }
+
 }
 

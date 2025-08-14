@@ -5,34 +5,19 @@ import java.util.regex.Pattern;
 public class Tasks {
 /** Задание 1
     Написать метод, который проверяет, является ли строка валидным номером телефона в формате +7(XXX)XXX-XX-XX.
-
-    Примеры:
-
-            +7(123)456-78-90 → true
-            +7123456-78-90 → false
-            +8(123)456-78-90 → false**/
+**/
     public boolean isValidPhoneNumber(String phone) {
-        if (phone == null || phone.isEmpty()) {
+        if (phone == null /*|| phone.isEmpty()*/) {
             return false;
         }
 
         return phone.matches("^\\+7\\(\\d{3}\\)\\d{3}-\\d{2}-\\d{2}$");
     }
 
-/**
-    Задание 2
+/**Задание 2
     Создать метод для валидации email адреса.
     Email должен содержать латинские буквы, цифры,
-    точки и дефисы в локальной части, символ @, и домен из букв и точек.
-
-
-    Примеры:
-
-    user@example.com → true
-    user.name@domain.co.uk → true
-    user@ → false
-    @domain.com → false
-**/
+    точки и дефисы в локальной части, символ @, и домен из букв и точек.**/
     public boolean isValidEmail(String email) {
         if (email == null || email.isEmpty()) {
             return false;
@@ -42,14 +27,7 @@ public class Tasks {
     }
 
    /** Задание 3
-    Написать метод, который извлекает все числа из строки и возвращает их сумму.
-
-    Примеры:
-
-            "У меня есть 5 яблок и 10 груш" → 15
-            "Нет чисел в тексте" → 0
-            "123abc456def789" → 1368
-**/
+    Написать метод, который извлекает все числа из строки и возвращает их сумму.**/
    public int extractAndSumNumbers(String text) {
        if (text == null || text.isEmpty()) {
            return 0;
@@ -66,12 +44,7 @@ public class Tasks {
 
     /**Задание 4
     Создать метод, который заменяет все последовательности пробелов (один или более)
-     на один пробел и удаляет пробелы в начале и конце строки.
-    Примеры:
-
-            "  hello    world  " → "hello world"
-            "multiple   spaces   here" → "multiple spaces here"
-**/
+     на один пробел и удаляет пробелы в начале и конце строки.**/
     public String normalizeSpaces(String text) {
         if (text == null) {
             return null;
@@ -79,5 +52,24 @@ public class Tasks {
 
         return text.trim().replaceAll(" +", " ");
     }
+
+    /**Задание 5
+    Написать метод, который проверяет силу пароля. Пароль считается сильным, если:
+
+    Длина от 8 до 20 символов
+    Содержит хотя бы одну заглавную букву
+    Содержит хотя бы одну строчную букву
+    Содержит хотя бы одну цифру
+    Содержит хотя бы один специальный символ (!@#$%^&*)**/
+    public boolean isStrongPassword(String password) {
+        if(password == null){
+            return false;
+        }
+
+        return password.matches(
+                " ^(?=.*[A-Z])(?=.*[a-z])(?=.*\\d)(?=.*[!@#$%^&*]).{8,20}$"
+        );
+    }
+
 
 }
