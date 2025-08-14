@@ -1,10 +1,13 @@
+import org.example.LogEntry;
 import org.example.Tasks;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class TasksTest {
 
@@ -14,7 +17,7 @@ class TasksTest {
     @Test
     void validPhoneNumber_ShouldReturnTrue() {
         String phone = "+7(123)456-78-90";
-        Assertions.assertTrue(validator.isValidPhoneNumber(phone));
+        assertTrue(validator.isValidPhoneNumber(phone));
     }
 
     @Test
@@ -40,7 +43,7 @@ class TasksTest {
     @Test
     void validEmail_ShouldReturnTrue() {
         String email = "user@example.com";
-        Assertions.assertTrue(validator.isValidEmail(email));
+        assertTrue(validator.isValidEmail(email));
     }
 
     @Test
@@ -154,7 +157,7 @@ class TasksTest {
         assertEquals(false, validator.isStrongPassword(""));
     }
 
-    //task6
+    //task7
     @Test
     void shouldReturnNull_CardNumberIsNull() {
         assertNull(validator.formatCardNumber(null));
@@ -191,6 +194,50 @@ class TasksTest {
     void testValidWithSpacesAndDashesMixed() {
         assertEquals("1234 5678 9012 3456",
                 validator.formatCardNumber("1234 - 5678 - 9012 - 3456"));
+    }
+
+    //task8
+    @Test
+    void testParseLogFile() {
+        String log = "192.168.1.1 - - [10/Oct/2023:13:55:36 +0000] \"GET /index.html HTTP/1.1\" 200 1234\n" +
+                "10.0.0.1 - - [10/Oct/2023:13:55:37 +0000] \"POST /api/data HTTP/1.1\" 404 567";
+
+        List<LogEntry> entries = validator.parseLogFile(log);
+
+        assertEquals(2, entries.size());
+
+        LogEntry first = entries.get(0);
+        assertEquals("192.168.1.1", first.ip);
+        assertEquals("10/Oct/2023:13:55:36 +0000", first.timestamp);
+        assertEquals(200, first.statusCode);
+
+        LogEntry second = entries.get(1);
+        assertEquals("10.0.0.1", second.ip);
+        assertEquals("10/Oct/2023:13:55:37 +0000", second.timestamp);
+        assertEquals(404, second.statusCode);
+    }
+
+    @Test
+    void testParseEmptyLog() {
+        String log = "";
+
+        List<LogEntry> entries = validator.parseLogFile(log);
+
+        assertTrue(entries.isEmpty(), "List should be empty for an empty log");
+    }
+
+    @Test
+    void testParseMalformedLog() {
+        String log = "malformed log line\n" +
+                "123.123.123.123 - - [11/Oct/2023:10:00:00 +0000] \"GET / HTTP/1.1\" 500 1000";
+
+        List<LogEntry> entries = validator.parseLogFile(log);
+
+        assertEquals(1, entries.size());
+        LogEntry entry = entries.get(0);
+        assertEquals("123.123.123.123", entry.ip);
+        assertEquals("11/Oct/2023:10:00:00 +0000", entry.timestamp);
+        assertEquals(500, entry.statusCode);
     }
 
 }

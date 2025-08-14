@@ -1,5 +1,8 @@
 package org.example;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class Tasks {
@@ -91,5 +94,33 @@ public class Tasks {
 
         return number.replaceAll("(.{4})(?=.)", "$1 ").trim();
     }
+
+  /*  Задание 8
+    Создать метод, который парсит лог-файл и извлекает IP адреса,
+    временные метки и HTTP статус коды.
+    Формат лога: IP - - [timestamp] "METHOD /path HTTP/1.1" status size
+
+    Пример лога:
+
+            192.168.1.1 - - [10/Oct/2023:13:55:36 +0000] "GET /index.html HTTP/1.1" 200 1234
+            10.0.0.1 - - [10/Oct/2023:13:55:37 +0000] "POST /api/data HTTP/1.1" 404 567
+*/
+  public List<LogEntry> parseLogFile(String logContent) {
+      List<LogEntry> entries = new ArrayList<>();
+
+      String logPattern = "(\\S+) - - \\[(.*?)\\] \".*?\" (\\d{3}) \\d+";
+      Pattern pattern = Pattern.compile(logPattern);
+      Matcher matcher = pattern.matcher(logContent);
+
+      while (matcher.find()) {
+          LogEntry entry = new LogEntry();
+          entry.ip = matcher.group(1);
+          entry.timestamp = matcher.group(2);
+          entry.statusCode = Integer.parseInt(matcher.group(3));
+          entries.add(entry);
+      }
+
+      return entries;
+  }
 
 }
